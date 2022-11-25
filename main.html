@@ -36,6 +36,42 @@
         </div>
     </div>
 </div>
+
+<input type="file" name="inputfile"
+       id="inputfile">
+<br>
+
+
+<script type="text/javascript">
+    function sliceIntoChunks(arr, chunkSize) {
+        const res = [];
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            const chunk = arr.slice(i, i + chunkSize);
+            res.push(chunk);
+        }
+        return res;
+    }
+
+    document.getElementById('inputfile')
+        .addEventListener('change', function() {
+
+            var fr=new FileReader();
+            fr.onload=function(){
+                let data;
+                let preguntas;
+                data=fr.result.toString();
+                let result = data.split(/\r?\n/);
+                preguntas=sliceIntoChunks(result,4)
+                console.log(preguntas)
+
+            }
+            fr.readAsText(this.files[0]);
+
+
+        })
+
+
+</script>
 <script>
     console.log("ready")
 
