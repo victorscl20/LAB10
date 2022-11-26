@@ -7,40 +7,122 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-<div class="container">
-    <div class="row">
-        <div class="col" style="font-size: xx-large">Inicio</div>
-        <div class="col">Cantidad de jugadores: <input id="n_p" type="number" required /></div>
-        <div class="col">Cantidad de preguntas: <input id="n_q" type="number" required /></div>
-        <div class="col"><button id="set" class="btn btn-dark" onclick="Setear()">Setear</button></div>
-    </div>
-</div>
-<div class="row" id="t_p">
-
-</div>
-<div class="row" id="t_p2">
-    <div class='col' id='p_'>
-        <div class='upload__box'>
-            <div class='upload__btn-box'>
-                <label class='upload__btn'>
-                    <p>Upload images</p>
-                    <input type='file' multiple='' data-max_length='20' class='upload__inputfile' accept='image/*'>
-                    </label>
-                </div>
-            <div class='upload__img-wrap'></div>
+<main>
+    <div class="container px-4 py-5" id="main">
+        <h1 class="pb-2 border-bottom">STF GAMES</h1>
+        <div class="d-flex mt-3 mb-4">
+            <div class="col">Cantidad de jugadores: <input id="n_p" type="number" max="5" min="2"></div>
+            <div class="col">Cantidad de preguntas: <input id="n_q" type="number" max="10" min="2"></div>
+            <div class="col"><button id="set" class="btn btn-dark" onclick="Setear()">Setear</button></div>
+            <div class="col"><input type="file" name="inputfile" id="inputfile"></div>
         </div>
+        <div class="container text-center" id="carta">
+        </div>
+
+        <div class="container text-center" id="carta2" style="display : none">
+            <div class="row">
+                <div class="col">
+                </div>
+                <div class="col">
+                    <div class="container-fluid px-4 py-5">
+                        <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                            <div class="card-header py-3 border-dark">
+                                <h4 class="my-0 fw-normal">Jugador 1</h4>
+                            </div>
+                            <div class="card-body">
+                                <form onsubmit="SubmitForm()" action="" class="row g-3">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"/>
+                                    <div class="form-group">
+                                        <p><img id="output" width="200" /></p>
+                                        <p><input type="file"  accept="image/*" name="image" id="file" class='upload__inputfile' onchange="loadFile(event)" style="display: none;"></p>
+                                        <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+                                    </div>
+                                    <br><br>
+                                    <div class="form-group">
+                                        <label id='favcolor'>Color: </label>
+                                        <input type='color' id='favcolor"+(i+1)+"' name='favcolor' value='#ff0000'><br><br>
+                                    </div>
+                                    <button type="submit" class="w-100 btn btn-lg btn-primary">save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+        </div>
+
+        <table class="table" id="tablero">
+            <thead>
+            <tr id="gaa">
+                <th>#</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-</div>
+</main>
 
-<input type="file" name="inputfile"
-       id="inputfile">
-<br>
+<script>
+    console.log("ready")
 
+    function Setear() {
+        $( "#set" ).remove();
+        let n_p = document.getElementById("n_p").value;
+        let n_q = document.getElementById("n_q").value;
+        console.log("el valor es" + n_p);
+        var miArreglo = [];
+
+        document.getElementById("carta2").style.display = "inline";
+
+        for (let i = 1; i<= n_q; i++) {
+            $("#gaa").append(
+                "<th>"+i+"</th>"
+            )
+        }
+    }
+
+    var Filaselec = null;
+    function SubmitForm() {
+        //leemos la data
+        var nombre = document.getElementById("nombre").value;
+        var color = document.getElementById("favcolor").value;
+        var image = document.getElementById('output').value;
+
+        var table = document.getElementById("tablero").getElementsByTagName('tbody')[0];
+        console.log("llego aqui")
+        if (Filaselec == null) {
+            //Creamos en la tabla
+            let longi = table.length
+            let nuevaFila = table.insertRow(longi);
+
+            //creamos la filas y le asignamos los valores del formulario(guardar)
+            DataCell0 = nuevaFila.insertCell(0);
+            DataCell0.innerHTML = nombre;
+        }
+        //se limpia el formulario
+        document.getElementById("nombre").value = "";
+        document.getElementById("favcolor").value = "";
+        document.getElementById("output").value = "";
+
+
+    }
+
+    var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+</script>
 
 <script type="text/javascript">
     function sliceIntoChunks(arr, chunkSize) {
@@ -72,41 +154,8 @@
 
 
 </script>
-<script>
-    console.log("ready")
-
-    function Setear() {
-        let n_p = document.getElementById("n_p").value;
-        console.log("el valor es" + n_p);
-        for (let i = 0; i < n_p; i++) {
-            $("#t_p").append(
-                "<div class='col' id='p_"+(i+1)+"'>Jugador: "+(i+1) +
-
-                        "<div class='upload__box'>"+
-                            "<div class='upload__btn-box'>"+
-                                "<label class='upload__btn'>"+
-                                    "<p>Upload images</p>"+
-                                    "<input type='file' multiple='' data-max_length='20' class='upload__inputfile'"+
-                                           "accept='image/*'>"+
-                                "</label>"+
-                            "</div>"+
-                            "<div class='upload__img-wrap'></div>"+
-                        "</div>"+
-
-                "</div>"
-            );
-
-        }
-
-    }
-
-
-
-
-
-</script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script><script  src="js/script.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 
 </html>
